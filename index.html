@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Check # of connections in use</title>
+      <link rel="stylesheet" href="https://unpkg.com/mvp.css">
+      <style>
+         form{width:500px;margin:auto}
+         input{width:300px;margin-left:auto;margin-right:auto}
+         #answer {text-align:center}
+         #buttonContainer{text-align:center}
+      </style>
+   </head>
+   <body>
+      <form style="">
+         <h1>Check # of connections in use</h1>
+         <input type="text" name="server" id="server" placeholder="Server" value="http://go.sr71.uk:80">
+         <input type="text" name="user" id="user" placeholder="User Name">
+         <input type="password" name="pw" id="pw" placeholder="Password">
+         <p id="answer"></p>
+         <div id="buttonContainer">
+            <button onclick="run();return false">Check</button>
+         </div>
+      </form>
+      <script type="text/javascript">
+         function run(){
+         server = document.getElementById('server').value;
+         user = document.getElementById('user').value;
+         pw = document.getElementById('pw').value;
+         apiURL = server+'/player_api.php?username='+user+'&password='+pw;
+         
+         var xhr = new XMLHttpRequest();
+         xhr.open('GET', apiURL);
+         xhr.onload = function () {
+             if (xhr.readyState === xhr.DONE) {
+                 if (xhr.status === 200) {
+                 	document.getElementById('answer').innerHTML= 'you are currently using <strong>'+JSON.parse(xhr.responseText).user_info.active_cons+'</strong> of your <strong>'+JSON.parse(xhr.responseText).user_info.max_connections+'</strong> allowed connections';
+                 }
+             }
+         };
+         
+         xhr.send(null)	
+         }
+      </script>
+   </body>
+</html>
